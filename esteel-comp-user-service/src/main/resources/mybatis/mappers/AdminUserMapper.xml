@@ -11,7 +11,7 @@
    <select id="queryAdminUserCount" resultType="java.lang.Integer">
 
        select
-        count(1)
+        count(*)
        from t_admin_user
        where 1= 1
 
