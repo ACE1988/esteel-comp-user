@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.esteel.user.dao.AdminUserMapper">
+
+    <resultMap id="getMap" type="com.esteel.user.entity.admin.AdminUser">
+    </resultMap>
+
+
+    <!-- 列表总数 -->
+   <select id="queryAdminUserCount" resultType="java.lang.Integer">
+
+       select
+        count(1)
+       from t_admin_user
+       where 1= 1
+
+       <if test="userName != null and userName != '' ">
+           and `user_name` like '%${userName}%'
+       </if>
+
+       <if test="email != null and email !='' ">
+           and `email` like '%${email}%'
+       </if>
+
+       <if test="status != null">
+           and `status` = #{status}
+       </if>
+
+       <if test="autoStatus != null">
+           and `auto_status` = #{autoStatus}
+       </if>
+
+   </select>
+
+    <!-- 列表 -->
+    <select id="queryAdminUserList" resultMap="getMap">
+
+        select
+        *
+        from t_admin_user
+        where 1= 1
+
+        <if test="userName != null and userName != '' ">
+            and `user_name` like '%${userName}%'
+        </if>
+
+        <if test="email != null and email !='' ">
+            and `email` like '%${email}%'
+        </if>
+
+        <if test="status != null">
+            and `status` = #{status}
+        </if>
+
+        <if test="autoStatus != null">
+            and `auto_status` = #{autoStatus}
+        </if>
+        order by create_time desc
+        <if test="pageNum != null and pageSize != null">
+            limit #{pageNum}, #{pageSize}
+        </if>
+
+    </select>
+
+    <!--重置密码 -->
+    <update id="resetPassword">
+        update t_admin_user set `password` =#{password} where id = #{id}
+    </update>
+
+    <!-- 启动禁用账号 -->
+    <update id="updateStatus">
+        update t_admin_user set `status` = #{status} where id = #{id}
+    </update>
+
+    <!-- 修改分配数 -->
+    <update id="updateNum">
+        update t_admin_user set `num` =#{num} where id = #{id}
+    </update>
+
+    <!-- 禁用启用分配 -->
+    <update id="updateAutoStatus">
+        update t_admin_user set `auto_status` =#{autoStatus} where id = #{id}
+    </update>
+
+    <!--  新增用户-->
+    <insert id="addAdminUser">
+        insert into t_admin_user
+        (`user_name`,`email`,`password`,`types`,`num`,`status`,`auto_status`,`create_time`)
+        values
+        (#{userName},#{email},#{password},#{types},#{num},#{status},#{autoStatus},now())
+    </insert>
+
+    <!-- 通过邮箱查询用户信息 -->
+    <select id="queryAdminUserByEmail" resultMap="getMap">
+        select * from t_admin_user where email = #{email}
+    </select>
+
+    <!-- 通过邮箱查询用户信息 -->
+    <select id="queryAdminUserByUserName" resultMap="getMap">
+        select * from t_admin_user where user_name = #{userName}
+    </select>
+
+    <!-- 根据用户id查询用户信息 -->
+    <select id="queryByUserId" resultMap="getMap">
+        select * from t_admin_user where id = #{userId}
+    </select>
+
+    <!-- 更新最近登录时间 -->
+    <update id="updateLoginTime">
+        update t_admin_user set `login_time` =#{loginTime} where id = #{userId}
+    </update>
+
+    <!-- 修改用户角色-->
+    <update id="updateTypesById">
+        update t_admin_user set `types` =#{types} where id = #{userId}
+    </update>
+
+    <update id="updateAdminUser">
+        update t_admin_user set `update_time`= now()
+        <if test="adminUser.email != null and adminUser.email != ''">
+            ,  email = #{adminUser.email}
+        </if>
+        <if test="adminUser.userName != null and adminUser.userName != ''">
+            , user_name = #{adminUser.userName}
+        </if>
+        where id = #{adminUser.id}
+    </update>
+
+
+    <!-- 操作员列表 不分页 -->
+    <select id="queryAdminUser" resultMap="getMap">
+        select * from t_admin_user where 1= 1 and status = 1
+        <if test="type != null ">
+            <![CDATA[ and types LIKE CONCAT('%',#{type,jdbcType=VARCHAR},'%')  ]]>
+        </if>
+        <if test="email != null and email != '' ">
+            <![CDATA[ and email LIKE CONCAT('%',#{email,jdbcType=VARCHAR},'%')  ]]>
+        </if>
+        <if test="userName != null and userName != '' ">
+            <![CDATA[ and user_name LIKE CONCAT('%',#{userName,jdbcType=VARCHAR},'%')  ]]>
+        </if>
+    </select>
+
+    <!-- 根据条件查询 -->
+    <select id="queryByAutoStatusAndStatusAndTypes" resultMap="getMap">
+        select * from t_admin_user where 1= 1 and num > 0
+        <if test="types != null ">
+            <![CDATA[ and types LIKE CONCAT('%',#{types,jdbcType=VARCHAR},'%')  ]]>
+        </if>
+        <if test="status != null ">
+             and status = #{status}
+        </if>
+        <if test="autoStatus != null ">
+            and auto_status = #{autoStatus}
+        </if>
+    </select>
+    
+</mapper>

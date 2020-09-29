@@ -1,0 +1,57 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.esteel</groupId>
+		<artifactId>esteel-parent</artifactId>
+		<version>1.0.0</version>
+	</parent>
+
+	<groupId>com.esteel.user</groupId>
+	<artifactId>esteel-comp-user</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<name>esteel-comp-user</name>
+	<packaging>pom</packaging>
+
+	<modules>
+		<module>esteel-comp-user-api</module>
+		<module>esteel-comp-user-service</module>
+    </modules>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>com.esteel.common</groupId>
+			<artifactId>esteel-common-pojo</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.glassfish.web</groupId>
+			<artifactId>javax.el</artifactId>
+			<version>2.2.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.el</groupId>
+			<artifactId>javax.el-api</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

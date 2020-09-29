@@ -1,0 +1,66 @@
+mybatis:
+  type-aliases-package: com.esteel.user.entity
+  config-location: classpath:mybatis/mybatis-config.xml
+  mapper-locations: classpath:mybatis/mappers/*.xml
+
+spring:
+  datasource:
+    url: jdbc:mysql://192.168.18.40:3306/esteel_dubbo?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: Q1w2e3r4!
+    driver-class-name: com.mysql.jdbc.Driver
+    testOnBorrow: true
+    test-on-borrow: true
+    validationQuery: SELECT 1
+    max-active: 5
+
+  redis:
+    database: 2
+    host: 192.168.18.41
+    port: 6379
+    password: q1w2e3r4
+    pool:
+      max-active: 10
+      max-wait: 5
+      max-idel: 2
+      min-idel: 2
+    timeout: 10000
+
+dubbo:
+  application:
+    name: user
+    owner: liujie
+  registry:
+    file: ${user.home}/output/comp-user.dubbo.cache
+    protocol: zookeeper
+    address: zookeeper://192.168.18.42:2181
+  protocol:
+    name: dubbo
+    port: -1
+  provider:
+    loadbalance: roundrobin
+    timeout: 6000
+    threads: 100
+    threadpool: fixed
+    validation: true
+  consumer:
+    timeout: 60000
+
+
+mq:
+  producer:
+    id: PID_USER
+    server-address: 47.100.175.111:9876
+  consumer:
+    id: CID_USER
+    server-address: 47.100.175.111:9876
+server:
+  port: -1
+
+logging:
+  pattern:
+    console: "%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %X{REQ_ID} %m%n"
+  level:
+    com.esteel.approve.dao: DEBUG
+    com.esteel.approve.service: DEBUG
+    com.esteel.approve.dubbo: DEBUG
