@@ -1,6 +1,8 @@
 package com.esteel.user.dubbo.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.esteel.common.constant.Constants;
+import com.esteel.common.dto.PaginationSupport;
 import com.esteel.user.common.Md5;
 import com.esteel.user.entity.admin.AdminUser;
 import com.esteel.user.service.AdminUserDubboService;
@@ -84,6 +86,46 @@ public class AdminUserDubboServiceImpl implements AdminUserDubboService {
             }).collect(Collectors.toList());
         logger.info("【操作员管理】 列表查询 request={}", JSONObject.toJSON(request));
         return DubboResponse.success(PageResponse.data(pageStart,pageSize,count,responses));
+    }
+
+    /**
+     * 操作员列表
+     * @param request
+     * @return
+     */
+    @Override
+    public DubboResponse<PaginationSupport<AdminUserResponse>> queryAdminUserV2(AdminUserRequest request) {
+        if(StringUtils.isNotBlank(request.getEmail())){
+            request.setEmail(request.getEmail().toLowerCase());
+        }
+        int pageStart = (request.getStartItem() != null ? request.getStartItem() : 0);
+        int pageSize = (request.getPageSize() != null ? request.getPageSize() : 10);
+        if(request.getAutoStatus() == null ){
+            request.setAutoStatus(1);
+        }
+
+        DubboResponse<PaginationSupport<AdminUserResponse>> resultResponse = new DubboResponse<>();
+        resultResponse.setStatus(Constants.System.OK);
+        resultResponse.setError(Constants.System.SERVER_SUCCESS);
+
+        int count = adminUserService.queryAdminUserCount(request.getUserName(),request.getEmail(),request.getStatus(),request.getAutoStatus());
+        List<AdminUser> list = adminUserService.queryAdminUserList(request.getUserName(),request.getEmail(),request.getStatus(),pageStart,pageSize,request.getAutoStatus());
+        List<AdminUserResponse> responses = list.stream().map(x -> {
+            AdminUserResponse response = new AdminUserResponse();
+            response.setEmail(x.getEmail());
+            response.setAutoStatus(x.getAutoStatus());
+            response.setId(x.getId());
+            response.setNum(x.getNum());
+            response.setPassword(x.getPassword());
+            response.setStatus(x.getStatus());
+            response.setUserName(x.getUserName());
+            return response ;
+        }).collect(Collectors.toList());
+        logger.info("【操作员管理】 列表查询 request={}", JSONObject.toJSON(request));
+        PaginationSupport paginationSupport = new PaginationSupport(responses, count, request.getPageSize(),
+                request.getCurrentPage());
+        resultResponse.setData(paginationSupport);
+        return resultResponse;
     }
 
     /**

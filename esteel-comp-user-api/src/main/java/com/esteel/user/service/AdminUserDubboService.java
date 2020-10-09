@@ -1,5 +1,6 @@
 package com.esteel.user.service;
 
+import com.esteel.common.dto.PaginationSupport;
 import com.esteel.common.dubbo.DubboResponse;
 import com.esteel.common.dubbo.PageResponse;
 import com.esteel.user.service.request.admin.AddAdminUserRequest;
@@ -32,6 +33,14 @@ public interface AdminUserDubboService {
      * @return
      */
     DubboResponse<PageResponse<AdminUserResponse>> queryAdminUser(AdminUserRequest request);
+
+
+    /**
+     * 操作员列表
+     * @param request
+     * @return
+     */
+    DubboResponse<PaginationSupport<AdminUserResponse>> queryAdminUserV2(AdminUserRequest request);
 
     /**
      * 用户登录
