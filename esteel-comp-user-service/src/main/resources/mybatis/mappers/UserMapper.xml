@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.esteel.user.dao.UserManager">
+
+    <resultMap id="BaseResultMap" type="com.esteel.user.entity.UserEntity">
+        <result column="user_id" property="userId" jdbcType="BIGINT"/>
+        <result column="dept_id" property="deptId" jdbcType="VARCHAR"/>
+        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="union_id" property="unionId" jdbcType="VARCHAR"/>
+        <result column="open_id" property="openId" jdbcType="VARCHAR"/>
+        <result column="register_time" property="registerTime" jdbcType="TIMESTAMP"/>
+        <result column="retire_time" property="retireTime" jdbcType="TIMESTAMP"/>
+        <result column="mobile_verified" property="mobileVerified" jdbcType="INTEGER"/>
+        <result column="email_verified" property="emailVerified" jdbcType="INTEGER"/>
+        <result column="source" property="source" jdbcType="INTEGER"/>
+        <result column="device_id" property="deviceId" jdbcType="VARCHAR"/>
+        <result column="ip" property="ip" jdbcType="VARCHAR"/>
+        <result column="cookie" property="cookie" jdbcType="VARCHAR"/>
+        <result column="geoX" property="geoX" jdbcType="VARCHAR"/>
+        <result column="geoY" property="geoY" jdbcType="VARCHAR"/>
+        <result column="reviewer" property="reviewer" jdbcType="BIGINT"/>
+        <result column="review_time" property="reviewTime" jdbcType="TIMESTAMP"/>
+        <result column="login_ip" property="loginIp" jdbcType="VARCHAR"/>
+        <result column="login_time" property="loginTime" jdbcType="TIMESTAMP"/>
+        <result column="last_login_ip" property="lastLoginIp" jdbcType="VARCHAR"/>
+        <result column="last_login_time" property="lastLoginTime" jdbcType="TIMESTAMP"/>
+        <result column="real_name" property="realName" jdbcType="VARCHAR"/>
+        <result column="sex" property="sex" jdbcType="INTEGER"/>
+        <result column="mobile" property="mobile" jdbcType="VARCHAR"/>
+        <result column="add_star_mobile" property="addStarMobile" jdbcType="VARCHAR"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="wechat" property="wechat" jdbcType="VARCHAR"/>
+        <result column="qq" property="qq" jdbcType="VARCHAR"/>
+        <result column="weibo" property="weibo" jdbcType="VARCHAR"/>
+        <result column="icon_url" property="iconUrl" jdbcType="VARCHAR"/>
+        <result column="city_code" property="cityCode" jdbcType="VARCHAR"/>
+        <result column="province" property="province" jdbcType="VARCHAR"/>
+        <result column="address" property="address" jdbcType="VARCHAR"/>
+        <result column="post_code" property="postCode" jdbcType="VARCHAR"/>
+        <result column="landline_phone" property="landlinePhone" jdbcType="VARCHAR"/>
+        <result column="fax" property="fax" jdbcType="VARCHAR"/>
+        <result column="id_code" property="idCode" jdbcType="VARCHAR"/>
+        <result column="id_type" property="idType" jdbcType="INTEGER"/>
+        <result column="birthday" property="birthday" jdbcType="DATE"/>
+        <result column="name_modify_num" property="nameModifyNum" jdbcType="INTEGER"/>
+        <result column="notes" property="notes" jdbcType="VARCHAR"/>
+        <result column="create_id" property="createId" jdbcType="BIGINT"/>
+        <result column="create_name" property="createName" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_id" property="updateId" jdbcType="BIGINT"/>
+        <result column="update_name" property="updateName" jdbcType="VARCHAR"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+
+    </resultMap>
+
+    <!-- 返回基本机制  -->
+    <sql id="Base_Column_List">
+        `user_id`,`dept_id`,`user_name`,`password`,`union_id`,`open_id`,`register_time`,`retire_time`,`mobile_verified`,`email_verified`,
+        `source`,`device_id`,`ip`,`cookie`,`geoX`,`geoY`,`reviewer`,`review_time`,`login_ip`,`login_time`,`last_login_ip`,`last_login_time`,
+        `real_name`,`sex`,`mobile`,`add_star_mobile`,`email`,`wechat`,`qq`,`weibo`,`icon_url`,`city_code`,`province`,`address`,
+        `post_code`,`landline_phone`,`fax`,`id_code`,`id_type`,`birthday`,`name_modify_num`,`notes`,`create_id`,`create_name`,`create_time`,
+        `update_id`,`update_name`,`update_time`,`status`
+    </sql>
+
+
+    <select id="queryUserList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_user
+        where 1= 1
+        <if test="userName != null and userName != '' ">
+            and `user_name` like '%${userName}%'
+        </if>
+
+        <if test="realName != null and realName != '' ">
+            and `real_name` like '%${realName}%'
+        </if>
+
+        <if test="email != null and email !='' ">
+            and `email` like '%${email}%'
+        </if>
+
+        <if test="mobile != null and mobile !='' ">
+            and `mobile` like '%${mobile}%'
+        </if>
+
+        <if test="landlinePhone != null and landlinePhone !='' ">
+            and `landline_phone` like '%${landlinePhone}%'
+        </if>
+
+        <if test="status >= 0">
+            and `status` = #{status}
+        </if>
+
+        order by register_time desc
+        <if test="pageNum != null and pageSize != null">
+            limit #{pageNum}, #{pageSize}
+        </if>
+    </select>
+
+    <select id="queryUserCount" resultType="java.lang.Long">
+        select
+        count(*)
+        from t_user
+        where 1= 1
+        <if test="userName != null and userName != '' ">
+            and `user_name` like '%${userName}%'
+        </if>
+
+        <if test="realName != null and realName != '' ">
+            and `real_name` like '%${realName}%'
+        </if>
+
+        <if test="email != null and email !='' ">
+            and `email` like '%${email}%'
+        </if>
+
+        <if test="mobile != null and mobile !='' ">
+            and `mobile` like '%${mobile}%'
+        </if>
+
+        <if test="landlinePhone != null and landlinePhone !='' ">
+            and `landline_phone` like '%${landlinePhone}%'
+        </if>
+
+        <if test="status >= 0">
+            and `status` = #{status}
+        </if>
+
+    </select>
+
+
+    <!-- 根据手机号码查询 -->
+    <select id="queryByMobile" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/> from t_user where `mobile` = #{mobile}
+    </select>
+
+
+    <!-- 根据手机号码查询 -->
+    <select id="queryByUserName" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/> from t_user where `user_name`   like '%${userName}%'
+    </select>
+
+    <!-- 用户ID查询 -->
+    <select id="queryUserByUserId" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/> from t_user where `user_id` = #{userId}
+    </select>
+
+    <!-- 用户ID，状态查询 -->
+    <select id="queryUserByUserIdAndStatus">
+        select <include refid="Base_Column_List"/> from t_user where `user_id` = #{userId} and `status` = #{status}
+    </select>
+
+    <!-- 新增用户 -->
+    <insert id="addUser">
+        insert into t_user
+        (`user_name`,`mobile`,`add_star_mobile`,`password`,`source`,`ip`,`create_time`)
+        values
+        (#{userName},#{mobile},#{addStarMobile},#{password},#{source},#{ip},now())
+    </insert>
+
+</mapper>

@@ -65,3 +65,5 @@ logging:
     com.esteel.approve.dao: DEBUG
     com.esteel.approve.service: DEBUG
     com.esteel.approve.dubbo: DEBUG
+
+constants.cardKey: cccc
