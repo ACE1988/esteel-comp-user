@@ -15,7 +15,7 @@ import lombok.ToString;
 @Data
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = false)
-public class AddUserRequest  extends BaseRequest {
+public class AddUserRequest extends BaseRequest {
 
 
     /**用户名*/

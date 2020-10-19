@@ -17,7 +17,7 @@ import javax.validation.constraints.NotNull;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @ToString(callSuper = true)
-public class LoginUserRequest  extends BaseRequest {
+public class LoginUserRequest extends BaseRequest {
 
     /**手机号码*/
     @NotNull(message = "手机号码不能为空")
